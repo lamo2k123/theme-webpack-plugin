@@ -1,0 +1,37 @@
+{
+  "name": "theme-webpack-plugin",
+  "version": "1.0.0",
+  "description": "Resolve theme directory",
+  "keywords": [
+    "webpack",
+    "theme",
+    "resolve theme"
+  ],
+  "homepage": "https://github.com/lamo2k123/theme-webpack-plugin",
+  "bugs": {
+    "url": "https://github.com/lamo2k123/theme-webpack-plugin/issues",
+    "email": "lamo2k123@gmail.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Aleksey Novikov",
+    "email": "lamo2k123@gmail.com"
+  },
+  "contributors": [],
+  "main": "index.js",
+  "repository": "lamo2k123/theme-webpack-plugin",
+  "scripts": {
+    "watch": "babel ./src/main.js -w -o ./index.js",
+    "build": "babel ./src/main.js -o ./index.js",
+    "uglify": "uglifyjs ./index.js -o ./index.js -c -m"
+  },
+  "devDependencies": {
+    "babel-cli": "6.6.5",
+    "babel-plugin-add-module-exports": "0.1.2",
+    "babel-plugin-transform-es2015-arrow-functions": "6.5.2",
+    "babel-plugin-transform-es2015-block-scoping": "6.7.1",
+    "babel-plugin-transform-es2015-classes": "6.6.5",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.7.4",
+    "uglify-js": "2.6.2"
+  }
+}
