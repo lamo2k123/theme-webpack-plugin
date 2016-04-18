@@ -1,6 +1,6 @@
 {
   "name": "theme-webpack-plugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Resolve theme directory",
   "keywords": [
     "webpack",
@@ -32,6 +32,7 @@
     "babel-plugin-transform-es2015-block-scoping": "6.7.1",
     "babel-plugin-transform-es2015-classes": "6.6.5",
     "babel-plugin-transform-es2015-modules-commonjs": "6.7.4",
+    "babel-plugin-transform-es2015-template-literals": "6.6.5",
     "uglify-js": "2.6.2"
   }
 }
