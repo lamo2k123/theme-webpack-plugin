@@ -9,17 +9,17 @@ class Theme {
         this.normalModuleFactory = this.normalModuleFactory.bind(this);
     }
 
-    resolve(key, result, callback) {
+    resolve(key, options, result, callback) {
         if(!result) {
             return callback();
         }
 
-        result[key] = this.theme(result[key], key);
+        result[key] = this.theme(result[key], key, options);
 
         return callback(null, result);
     }
 
-    theme(modules, themes, context, key) {
+    theme(modules, themes, context, key, options) {
         let valid = false;
 
         switch(typeof modules) {
@@ -40,9 +40,25 @@ class Theme {
                 if(themes.hasOwnProperty(i)) {
                     if(key == 'request') {
                         let theme   = context.replace(modules, '$1/' + themes[i]),
-                            dir     = resolve('node_modules', theme);
+                            dir     = resolve('node_modules', theme),
+                            exists  = false;
 
-                        if(existsSync(dir)) {
+                        if(options && options.resolve && options.resolve.modulesDirectories) {
+                            for(let n in options.resolve.modulesDirectories) {
+                                if(options.resolve.modulesDirectories.hasOwnProperty(n)) {
+                                    if(options.resolve.modulesDirectories[n] != 'node_modules') {
+                                        dir = resolve(options.resolve.modulesDirectories[n], theme);
+                                        exists = existsSync(dir);
+
+                                        if(exists) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if(exists) {
                             context = theme;
                             break;
                         }
@@ -54,12 +70,12 @@ class Theme {
         return context;
     }
 
-    normalModuleFactory(nmf) {
-        nmf.plugin('before-resolve', this.resolve.bind(this, 'request'));
+    normalModuleFactory(options, nmf) {
+        nmf.plugin('before-resolve', this.resolve.bind(this, 'request', options));
     }
 
     apply(compiler) {
-        compiler.plugin('normal-module-factory', this.normalModuleFactory);
+        compiler.plugin('normal-module-factory', this.normalModuleFactory.bind(this, compiler.options));
     }
 
 }
