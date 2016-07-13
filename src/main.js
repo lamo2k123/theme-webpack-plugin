@@ -40,20 +40,20 @@ class Theme {
                 if(themes.hasOwnProperty(i)) {
                     if(key == 'request') {
                         let theme   = context.replace(modules, '$1/' + themes[i]),
-                            dir     = resolve('node_modules', theme),
+                            dirs    = ['node_modules'],
                             exists  = false;
 
                         if(options && options.resolve && options.resolve.modulesDirectories) {
-                            for(let n in options.resolve.modulesDirectories) {
-                                if(options.resolve.modulesDirectories.hasOwnProperty(n)) {
-                                    if(options.resolve.modulesDirectories[n] != 'node_modules') {
-                                        dir = resolve(options.resolve.modulesDirectories[n], theme);
-                                        exists = existsSync(dir);
+                            dirs = options.resolve.modulesDirectories;
+                        }
 
-                                        if(exists) {
-                                            break;
-                                        }
-                                    }
+                        for(let n in dirs) {
+                            if(dirs.hasOwnProperty(n)) {
+                                let dir = resolve(dirs[n], theme);
+                                exists = existsSync(dir);
+
+                                if(exists) {
+                                    break;
                                 }
                             }
                         }
