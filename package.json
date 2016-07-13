@@ -1,6 +1,6 @@
 {
   "name": "theme-webpack-plugin",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Resolve theme directory",
   "keywords": [
     "webpack",
@@ -22,8 +22,7 @@
   "repository": "lamo2k123/theme-webpack-plugin",
   "scripts": {
     "watch": "babel ./src/main.js -w -o ./index.js",
-    "build": "babel ./src/main.js -o ./index.js",
-    "uglify": "uglifyjs ./index.js -o ./index.js -c -m"
+    "build": "babel ./src/main.js -o ./index.js"
   },
   "devDependencies": {
     "babel-cli": "6.6.5",
@@ -32,7 +31,6 @@
     "babel-plugin-transform-es2015-block-scoping": "6.7.1",
     "babel-plugin-transform-es2015-classes": "6.6.5",
     "babel-plugin-transform-es2015-modules-commonjs": "6.7.4",
-    "babel-plugin-transform-es2015-template-literals": "6.6.5",
-    "uglify-js": "2.6.2"
+    "babel-plugin-transform-es2015-template-literals": "6.6.5"
   }
 }
