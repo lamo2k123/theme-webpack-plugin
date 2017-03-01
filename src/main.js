@@ -1,56 +1,46 @@
 import { existsSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { resolve } from 'path';
 
 class Theme {
 
-    constructor(modules, themes) {
-        this.apply = this.apply.bind(this);
-        this.theme = this.theme.bind(this, modules, themes);
-        this.normalModuleFactory = this.normalModuleFactory.bind(this);
+    constructor(modules, themes = []) {
+        this._params = {
+            modules,
+            themes
+        };
     }
 
-    resolve(key, options, result, callback) {
-        if(!result) {
-            return callback();
-        }
-
-        result[key] = this.theme(result[key], key, options);
-
-        return callback(null, result);
-    }
-
-    theme(modules, themes, context, key, options) {
+    theme = (context, key, options = {}) => {
         let valid = false;
 
-        switch(typeof modules) {
+        switch(typeof this._params.modules) {
             case 'string':
-                valid = modules === context;
+                valid = this._params.modules === context;
                 break;
             case 'object':
-                if(Array.isArray(modules)) {
-                    valid = modules.indexOf(context) !== -1;
-                } else if(!!modules.test) {
-                    valid = modules.test(context);
+                if(Array.isArray(this._params.modules)) {
+                    valid = this._params.modules.indexOf(context) !== -1;
+                } else if(!!this._params.modules.test) {
+                    valid = this._params.modules.test(context);
                 }
                 break;
         }
 
         if(valid) {
-            for(let i in themes) {
-                if(themes.hasOwnProperty(i)) {
+            for(let i in this._params.themes) {
+                if(Object.prototype.hasOwnProperty.call(this._params.themes, i)) {
                     if(key == 'request') {
-                        let theme   = context.replace(modules, '$1/' + themes[i]),
+                        let theme   = context.replace(this._params.modules, `$1/${this._params.themes[i]}`),
                             dirs    = ['node_modules'],
                             exists  = false;
 
-                        if(options && options.resolve && options.resolve.modulesDirectories) {
-                            dirs = options.resolve.modulesDirectories;
+                        if(options.resolve && options.resolve.modules) {
+                            dirs = options.resolve.modules;
                         }
 
                         for(let n in dirs) {
-                            if(dirs.hasOwnProperty(n)) {
-                                let dir = resolve(dirs[n], theme);
-                                exists = existsSync(dir);
+                            if(Object.prototype.hasOwnProperty.call(dirs, n)) {
+                                exists = existsSync(resolve(dirs[n], theme));
 
                                 if(exists) {
                                     break;
@@ -68,15 +58,25 @@ class Theme {
         }
 
         return context;
-    }
+    };
 
-    normalModuleFactory(options, nmf) {
-        nmf.plugin('before-resolve', this.resolve.bind(this, 'request', options));
-    }
+    resolve = (key, options) => (result, callback) => {
+        if(!result) {
+            return callback();
+        }
 
-    apply(compiler) {
-        compiler.plugin('normal-module-factory', this.normalModuleFactory.bind(this, compiler.options));
-    }
+        result[key] = this.theme(result[key], key, options);
+
+        return callback(null, result);
+    };
+
+    nmf = (options) => (nmf) => {
+        nmf.plugin('before-resolve', this.resolve('request', options));
+    };
+
+    apply = (compiler) => {
+        compiler.plugin('normal-module-factory', this.nmf(compiler.options));
+    };
 
 }
 

@@ -1,14 +1,21 @@
-language: node_js
 sudo: false
+os:
+  - linux
+  - osx
+
+language: node_js
 node_js:
   - 5
+  - 6
+  - 7
 
 cache:
+  yarn: true
   directories:
     - node_modules
 
 script:
-  - npm run build
+  - yarn build
 
 deploy:
   provider: npm
