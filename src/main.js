@@ -30,7 +30,7 @@ class Theme {
             for(let i in this._params.themes) {
                 if(Object.prototype.hasOwnProperty.call(this._params.themes, i)) {
                     if(key == 'request') {
-                        let theme      = context.replace(this._params.modules, `$1/${this._params.themes[i]}`),
+                        let theme      = context.replace(this._params.modules, `$1/${this._params.themes[i]}/`),
                             dirs       = ['node_modules'],
                             extensions = [''],
                             exists     = false;
