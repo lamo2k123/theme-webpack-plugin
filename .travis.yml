@@ -8,6 +8,8 @@ node_js:
   - 5
   - 6
   - 7
+  - 8
+  - 9
 
 cache:
   yarn: true
@@ -18,9 +20,11 @@ script:
   - yarn build
 
 deploy:
+  skip_cleanup: true
   provider: npm
   email: lamo2k123@gmail.com
   api_key: $NPM_API_KEY
   on:
     tags: true
+    node: 8
     repo: lamo2k123/theme-webpack-plugin
