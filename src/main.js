@@ -30,17 +30,32 @@ class Theme {
             for(let i in this._params.themes) {
                 if(Object.prototype.hasOwnProperty.call(this._params.themes, i)) {
                     if(key == 'request') {
-                        let theme   = context.replace(this._params.modules, `$1/${this._params.themes[i]}`),
-                            dirs    = ['node_modules'],
-                            exists  = false;
+                        let theme      = context.replace(this._params.modules, `$1/${this._params.themes[i]}`),
+                            dirs       = ['node_modules'],
+                            extensions = [''],
+                            exists     = false;
 
-                        if(options.resolve && options.resolve.modules) {
-                            dirs = options.resolve.modules;
+                        if(options.resolve) {
+                            if(options.resolve.modules) {
+                                dirs = options.resolve.modules;
+                            }
+                            
+                            if(options.resolve.extensions) {
+                                extensions = extensions.concat(options.resolve.extensions);
+                            }
                         }
 
                         for(let n in dirs) {
                             if(Object.prototype.hasOwnProperty.call(dirs, n)) {
-                                exists = existsSync(resolve(dirs[n], theme));
+                                for(let s in extensions) {
+                                    if(Object.prototype.hasOwnProperty.call(extensions, s)) {
+                                        exists = existsSync(resolve(dirs[n], theme + extensions[s]));
+                                        
+                                        if(exists) {
+                                            break;
+                                        }
+                                    }
+                                }
 
                                 if(exists) {
                                     break;
