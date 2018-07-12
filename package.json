@@ -1,6 +1,6 @@
 {
   "name": "theme-webpack-plugin",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "Resolve theme directory",
   "keywords": [
     "webpack",
@@ -17,12 +17,15 @@
     "name": "Aleksey Novikov",
     "email": "lamo2k123@gmail.com"
   },
-  "contributors": [],
+  "contributors": [{
+    "name": "Yury Vasiliev",
+    "email": "drobowski@gmail.com"
+  }],
   "main": "index.js",
   "repository": "lamo2k123/theme-webpack-plugin",
   "scripts": {
-    "watch": "babel ./src/main.js -w -o ./index.js",
-    "build": "babel ./src/main.js -o ./index.js"
+    "watch": "babel ./src/index.js -w -o ./index.js",
+    "build": "babel ./src/index.js -o ./index.js"
   },
   "devDependencies": {
     "babel-cli": "6.23.0",
