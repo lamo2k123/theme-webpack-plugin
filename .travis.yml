@@ -27,5 +27,5 @@ deploy:
   api_key: $NPM_API_KEY
   on:
     tags: true
-    node: 8
+    node: 10
     repo: lamo2k123/theme-webpack-plugin
